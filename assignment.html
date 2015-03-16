@@ -69,28 +69,19 @@ img {
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>This second programming assignment will require you to write an R function is able to cache potentially time-consuming computations. For example, taking the mean of a numeric vector is typically a fast operation. However, for a very long vector, it may take too long to compute the mean, especially if it has to be computed repeatedly (e.g. in a loop). If the contents of a vector are not changing, it may make sense to cache the value of the mean so that when we need it again, it can be looked up in the cache rather than recomputed. In this Programming Assignment will take advantage of the scoping rules of the R language and how they can be manipulated to preserve state inside of an R object. ##Example: Caching the Mean of a Vector</p>
-<p>In this example we introduce the &lt;&lt;- operator which can be used to assign a value to an object in an environment that is different from the current environment. Below are two functions that are used to create a special object that stores a numeric vector and cache’s its mean. The first function, makeVector creates a special “vector”, which is really a list containing a function to</p>
+<p>This second programming assignment will require you to write an R function is able to cache potentially time-consuming computations. For example, taking the mean of a numeric vector is typically a fast operation. However, for a very long vector, it may take too long to compute the mean, especially if it has to be computed repeatedly (e.g. in a loop). If the contents of a vector are not changing, it may make sense to cache the value of the mean so that when we need it again, it can be looked up in the cache rather than recomputed. In this Programming Assignment will take advantage of the scoping rules of the R language and how they can be manipulated to preserve state inside of an R object.</p>
+</div>
+<div id="example-caching-the-mean-of-a-vector" class="section level2">
+<h2>Example: Caching the Mean of a Vector</h2>
+<p>In this example we introduce the &lt;&lt;- operator which can be used to assign a value to an object in an environment that is different from the current environment. Below are two functions that are used to create a special object that stores a numeric vector and cache’s its mean.</p>
+<p>The first function, makeVector creates a special “vector”, which is really a list containing a function to</p>
 <ol style="list-style-type: decimal">
 <li>set the value of the vector</li>
 <li>get the value of the vector</li>
 <li>set the value of the mean</li>
-<li>get the value of the mean</li>
+<li><p>get the value of the mean</p>
+<p>‘makeVector &lt;- function(x = numeric()) { m &lt;- NULL set &lt;- function(y) { x &lt;&lt;- y m &lt;&lt;- NULL } get &lt;- function() x setmean &lt;- function(mean) m &lt;&lt;- mean getmean &lt;- function() m list(set = set, get = get, setmean = setmean, getmean = getmean) }’</p></li>
 </ol>
-<p>CODE</p>
-<pre><code>`makeVector &lt;- function(x = numeric()) {`
-    `m &lt;- NULL`
-    `set &lt;- function(y) {`
-        `x &lt;&lt;- y`
-        `m &lt;&lt;- NULL`
-    `}`
-    `get &lt;- function() x`
-    `setmean &lt;- function(mean) m &lt;&lt;- mean`
-    `getmean &lt;- function() m`
-    `list(set = set, get = get,`
-        `setmean = setmean,`
-        `getmean = getmean)`
-`}`</code></pre>
 <p>The following function calculates the mean of the special “vector” created with the above function. However, it first checks to see if the mean has already been calculated. If so, it gets the mean from the cache and skips the computation. Otherwise, it calculates the mean of the data and sets the value of the mean in the cache via the setmean function.</p>
 <pre><code>`cachemean &lt;- function(x, ...) {`
     `m &lt;- x$getmean()`
