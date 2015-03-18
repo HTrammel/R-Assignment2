@@ -1,0 +1,56 @@
+m <- matrix(c(-1, -2, 1, 1), 2,2)
+x <- makeCacheMatrix(m)
+x$get()
+     [,1] [,2]
+[1,]   -1    1
+[2,]   -2    1
+
+inv <- cacheSolve(x)
+inv
+     [,1] [,2]
+[1,]    1   -1
+[2,]    2   -1
+
+> inv <- cacheSolve(x)
+getting cached data
+> inv
+     [,1] [,2]
+[1,]    1   -1
+[2,]    2   -1
+
+---------------------
+Can always validate whether you have the inverse, with:
+
+matrixA * matrixAInverse = MatrixIdentity
+
+---------------------
+Assuming x is as above, and you have set the inverse, then:
+
+x$get() %*% x$getInverse()
+
+should yield the identity matrix.
+
+------------------------
+Assuming you know that the purpose of assignment 2 is less about the functionality and more about the process of using Git & GitHub, then I assume you want to know whether solve will give you rounding errors: The simple answer is: Yes
+In my test the rounding error was only of the order of 10^-17.
+For example:
+
+> id <- x$get() %*% x$getInverse()
+> id
+       [,1]  [,2] [,3]
+[1,]  1e+00 7e-18    0
+[2,]  2e-17 1e+00    0
+[3,] -7e-18 0e+00    1
+
+> round(id, 2)
+     [,1] [,2] [,3]
+[1,]    1    0    0
+[2,]    0    1    0
+[3,]    0    0    1
+
+------------------------
+> diag(x = 1, 3, 3)
+     [,1] [,2] [,3]
+[1,]    1    0    0
+[2,]    0    1    0
+[3,]    0    0    1

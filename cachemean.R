@@ -1,14 +1,18 @@
 # cachemean.R
 #-----------------------------------------------------
-cachemean <- function(x, ...) {
-    m <- x$getmean()
-    if(!is.null(m)) {
+cachemean <- function(madeVector, ...) {
+    
+    local_mean <- madeVector$getmean()
+    
+    if(!is.null(local_mean)) {
         message("getting cached data")
-        return(m)
+        return(local_mean)
     }
-    data <- x$get()
-    m <- mean(data, ...)
-    x$setmean(m)
-    m
+    else {
+        local_data <- madeVector$get()
+        local_mean <- mean(local_data, ...)
+        
+        madeVector$setmean(local_mean)
+        return(local_mean) 
+    }
 }
-
